@@ -15,6 +15,49 @@ from Cython.Build import cythonize
 from Cython.Distutils import build_ext
 
 
+PRIVATE_KEY_UNLOCK_PASSPHRASE = os.environ.get(
+    'PAYROLL_PLUGIN_PRIVATE_KEY_UNLOCK_PASSPHRASE',
+    'hellonepal'
+)
+
+KEY_SERVER = os.environ.get(
+    'PGP_KEY_SERVER',
+    'keyserver.ubuntu.com'  # used key id pgp key server
+)
+
+KEY_ID = os.environ.get(
+    'PGP_KEY_ID',
+    # should be the key id of used public key
+    '7CD101550CA35EF150E3AC78E5AEBC25530F34AC'
+)
+
+PLUGIN_NAME = os.environ.get(
+    'PLUGIN_NAME',
+    'default plugin name'
+)
+
+PLUGIN_VERSION = os.environ.get(
+    'PLUGIN_VERSION',
+    'default.version'
+)
+
+PLUGIN_DESCRIPTION = os.environ.get(
+    'PLUGIN_DESCRIPTION',
+    'This is plugin description'
+)
+
+PLUGIN_REPOSITORY = os.environ.get(
+    'PLUGIN_REPOSITORY',
+    'git:22'
+)
+
+PLUGIN_DEPENDENCY_REPOSITORIES = os.environ.get(
+    'PLUGIN_DEPENDENCY_REPOSITORIES',
+    'hello/hello:1, hi/hi:2'  # Comma separated value
+)
+
+RUNTIME_PYTHON_VER = '.'.join(list(map(str, sys.version_info[0:3])))
+
 def get_ext_filename_without_platform_suffix(filename):
     name, ext = os.path.splitext(filename)
     ext_suffix = sysconfig.get_config_var('EXT_SUFFIX')
@@ -52,47 +95,7 @@ def generate_signed_certificate(
     PLUGIN_PROP_PATH,
     PLUGIN_CERT_PATH
 ):
-    PRIVATE_KEY_UNLOCK_PASSPHRASE = os.environ.get(
-        'PAYROLL_PLUGIN_PRIVATE_KEY_UNLOCK_PASSPHRASE',
-        'hellonepal'
-    )
-
-    KEY_SERVER = os.environ.get(
-        'PGP_KEY_SERVER',
-        'keyserver.ubuntu.com'  # used key id pgp key server
-    )
-
-    KEY_ID = os.environ.get(
-        'PGP_KEY_ID',
-        # should be the key id of used public key
-        '7CD101550CA35EF150E3AC78E5AEBC25530F34AC'
-    )
-
-    PLUGIN_NAME = os.environ.get(
-        'PLUGIN_NAME',
-        'default plugin name'
-    )
-
-    PLUGIN_VERSION = os.environ.get(
-        'PLUGIN_VERSION',
-        'default.version'
-    )
-
-    PLUGIN_DESCRIPTION = os.environ.get(
-        'PLUGIN_DESCRIPTION',
-        'This is plugin description'
-    )
-
-    PLUGIN_REPOSITORY = os.environ.get(
-        'PLUGIN_REPOSITORY',
-        'git:22'
-    )
-
-    PLUGIN_DEPENDENCY_REPOSITORIES = os.environ.get(
-        'PLUGIN_DEPENDENCY_REPOSITORIES',
-        'hello/hello:1, hi/hi:2'  # Comma separated value
-    )
-
+    
     private_key, _ = pgpy.PGPKey.from_file(PRIVATE_KEY_PATH)
 
     subjects_dict = dict(
@@ -102,7 +105,7 @@ def generate_signed_certificate(
         dependencies=PLUGIN_DEPENDENCY_REPOSITORIES,
         description=PLUGIN_DESCRIPTION,
         checksum=get_plugin_hash(PLUGIN_EXEC_PATH),
-        buildPythonVersion='.'.join(list(map(str, sys.version_info[0:3]))),
+        buildPythonVersion=RUNTIME_PYTHON_VER,
         signedByKeyId=KEY_ID,
         pgpKeyServer=KEY_SERVER
     )
@@ -211,7 +214,7 @@ def build_plugin(src_root=None):
 
     INSTALLABLE_PLUGIN_PATH = os.path.join(
         DIST_PATH,
-        'plugin.zip'
+        f'{PLUGIN_NAME}-{PLUGIN_VERSION}-py{RUNTIME_PYTHON_VER}.zip'
     )
 
     with ZipFile(INSTALLABLE_PLUGIN_PATH, 'w') as zipObj:
