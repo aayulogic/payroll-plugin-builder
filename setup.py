@@ -1,4 +1,4 @@
-from setuptools import setup, find_packages
+from setuptools import setup
 
 setup(
     name='rhrs_payroll_calc_plugin_builder',
@@ -13,10 +13,8 @@ setup(
     ],
     classifiers=[
         "Programming Language :: Python :: 3",
-        "License :: OSI Approved :: MIT License",
-        "Operating System :: OS Independent",
+        "Operating System :: OS Independent"
     ],
-    package_dir={"": "src"},
-    packages=find_packages(where="src"),
+    py_modules=["build"],
     python_requires=">=3.6",
 )
