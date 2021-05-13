@@ -1,8 +1,8 @@
 from setuptools import setup
 
 setup(
-    name='rhrs_payroll_calc_plugin_builder',
-    version='0.9',    
+    name='rhrs_plugin_builder',
+    version='0.',    
     description='RealHRSoft payroll calculator plugin builder',
     url='https://github.com/aayulogic/payroll-plugin-builder.git',
     author='Rupesh Singh',
@@ -15,6 +15,6 @@ setup(
         "Programming Language :: Python :: 3",
         "Operating System :: OS Independent"
     ],
-    py_modules=["build"],
+    py_modules=["rhrs_calc"],
     python_requires=">=3.6",
 )
