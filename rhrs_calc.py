@@ -162,7 +162,9 @@ def compile_plugin(SCRIPT_PATH, DIST_PATH):
     )
 
 
-def build_plugin(src_root=None):
+def build_plugin(src_root=None, env=dict()):
+
+    os.environ.update(env)
 
     PLUGIN_NAME = os.environ.get(
         'PLUGIN_NAME',
