@@ -15,47 +15,6 @@ from Cython.Build import cythonize
 from Cython.Distutils import build_ext
 
 
-PRIVATE_KEY_UNLOCK_PASSPHRASE = os.environ.get(
-    'PAYROLL_PLUGIN_PRIVATE_KEY_UNLOCK_PASSPHRASE',
-    'hellonepal'
-)
-
-KEY_SERVER = os.environ.get(
-    'PGP_KEY_SERVER',
-    'keyserver.ubuntu.com'  # used key id pgp key server
-)
-
-KEY_ID = os.environ.get(
-    'PGP_KEY_ID',
-    # should be the key id of used public key
-    '7CD101550CA35EF150E3AC78E5AEBC25530F34AC'
-)
-
-PLUGIN_NAME = os.environ.get(
-    'PLUGIN_NAME',
-    'default plugin name'
-)
-
-PLUGIN_VERSION = os.environ.get(
-    'PLUGIN_VERSION',
-    'default.version'
-)
-
-PLUGIN_DESCRIPTION = os.environ.get(
-    'PLUGIN_DESCRIPTION',
-    'This is plugin description'
-)
-
-PLUGIN_REPOSITORY = os.environ.get(
-    'PLUGIN_REPOSITORY',
-    'git:22'
-)
-
-PLUGIN_DEPENDENCY_REPOSITORIES = os.environ.get(
-    'PLUGIN_DEPENDENCY_REPOSITORIES',
-    'hello/hello:1, hi/hi:2'  # Comma separated value
-)
-
 RUNTIME_PYTHON_VER = '.'.join(list(map(str, sys.version_info[0:3])))
 
 def get_ext_filename_without_platform_suffix(filename):
@@ -95,6 +54,47 @@ def generate_signed_certificate(
     PLUGIN_PROP_PATH,
     PLUGIN_CERT_PATH
 ):
+
+    PRIVATE_KEY_UNLOCK_PASSPHRASE = os.environ.get(
+        'PAYROLL_PLUGIN_PRIVATE_KEY_UNLOCK_PASSPHRASE',
+        'hellonepal'
+    )
+
+    KEY_SERVER = os.environ.get(
+        'PGP_KEY_SERVER',
+        'keyserver.ubuntu.com'  # used key id pgp key server
+    )
+
+    KEY_ID = os.environ.get(
+        'PGP_KEY_ID',
+        # should be the key id of used public key
+        '7CD101550CA35EF150E3AC78E5AEBC25530F34AC'
+    )
+
+    PLUGIN_NAME = os.environ.get(
+        'PLUGIN_NAME',
+        'default plugin name'
+    )
+
+    PLUGIN_VERSION = os.environ.get(
+        'PLUGIN_VERSION',
+        'default.version'
+    )
+
+    PLUGIN_DESCRIPTION = os.environ.get(
+        'PLUGIN_DESCRIPTION',
+        'This is plugin description'
+    )
+
+    PLUGIN_REPOSITORY = os.environ.get(
+        'PLUGIN_REPOSITORY',
+        'git:22'
+    )
+
+    PLUGIN_DEPENDENCY_REPOSITORIES = os.environ.get(
+        'PLUGIN_DEPENDENCY_REPOSITORIES',
+        'hello/hello:1, hi/hi:2'  # Comma separated value
+    )
     
     private_key, _ = pgpy.PGPKey.from_file(PRIVATE_KEY_PATH)
 
@@ -163,6 +163,17 @@ def compile_plugin(SCRIPT_PATH, DIST_PATH):
 
 
 def build_plugin(src_root=None):
+
+    PLUGIN_NAME = os.environ.get(
+        'PLUGIN_NAME',
+        'default plugin name'
+    )
+
+    PLUGIN_VERSION = os.environ.get(
+        'PLUGIN_VERSION',
+        'default.version'
+    )
+
     SRC_ROOT =src_root or os.path.dirname(
         os.path.abspath(__file__)
     )
