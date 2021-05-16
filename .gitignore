@@ -1,4 +1,8 @@
 __pycache__/
 .venv/
 .vscode/
+test/dist
+test/env.rc
+test/plugin.c
+test/*.pgp
 

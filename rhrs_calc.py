@@ -10,7 +10,7 @@ import hashlib
 
 from zipfile import ZipFile
 
-from setuptools import setup
+from setuptools import setup, Extension
 from Cython.Build import cythonize
 from Cython.Distutils import build_ext
 
@@ -142,10 +142,18 @@ def generate_signed_certificate(
 
 def compile_plugin(SCRIPT_PATH, DIST_PATH):
 
+    extensions = [
+        Extension("plugin", [SCRIPT_PATH],
+            library_dirs=['/usr/lib64/atlas/', '/usr/lib/atlas'],
+            include_dirs=['/usr/include'],
+            libraries=['cblas']
+        )
+    ]
+
     setup(
         fullname="plugin",
         ext_modules=cythonize(
-            SCRIPT_PATH,
+            extensions,
             compiler_directives={
                 'language_level': sys.version_info[0],
                 'always_allow_keywords': True
